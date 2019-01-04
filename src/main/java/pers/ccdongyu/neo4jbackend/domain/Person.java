@@ -27,6 +27,8 @@ public class Person {
     @Relationship(type = "Friend")
     private List<Friend> friends;
 
+    @Relationship(type = "Release")
+    private List<Release> releases;
 
     public Person() {
     }

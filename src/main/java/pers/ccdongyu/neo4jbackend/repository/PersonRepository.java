@@ -4,6 +4,7 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
+import pers.ccdongyu.neo4jbackend.domain.Dynamic;
 import pers.ccdongyu.neo4jbackend.domain.Person;
 
 import java.util.Collection;
