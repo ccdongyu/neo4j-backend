@@ -45,7 +45,11 @@ public class DynamicService {
         return Status.getInstance(200, "get dynamic list success", dynamics);
     }
 
-    public Status deleteDynamic() {
-        return null;
+    public Status deleteDynamic(Long nodeId) {
+        if (dynamicRepository.findDynamicById(nodeId) == null){
+            return Status.getFailedInstance("无效的动态编号");
+        }
+        dynamicRepository.deleteDynamicById(nodeId);
+        return Status.getSucceedInstance();
     }
 }

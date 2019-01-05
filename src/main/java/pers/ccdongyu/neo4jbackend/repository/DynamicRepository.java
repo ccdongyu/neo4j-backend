@@ -9,7 +9,13 @@ import java.util.List;
 public interface DynamicRepository extends Neo4jRepository<Dynamic, Long> {
     @Query("MATCH (a:Person), (b:Dynamic) WHERE a.name={0} AND ID(b)={1}"+
             "CREATE (a)-[:Release]->(b)")
-    void createDynamic(String userid, Long dynamicid);
+    void createDynamic(String userId, Long dynamicId);
 
-    List<Dynamic> getDynamicsByUserid(String userid);
+    List<Dynamic> getDynamicsByUserid(String userId);
+
+    @Query("MATCH (n:Dynamic) WHERE ID(n)={0} RETURN n")
+    Dynamic findDynamicById(Long dynamicId);
+
+    @Query("MATCH (n:Dynamic) WHERE ID(n)={0} DETACH DELETE n")
+    void deleteDynamicById(Long dynamicId);
 }
