@@ -9,6 +9,7 @@ import pers.ccdongyu.neo4jbackend.message.Status;
 import pers.ccdongyu.neo4jbackend.repository.DynamicRepository;
 import pers.ccdongyu.neo4jbackend.repository.PersonRepository;
 
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -31,7 +32,7 @@ public class DynamicService {
         }
         Dynamic dynamic = new Dynamic(content, userid);
         dynamicRepository.save(dynamic);
-        dynamicRepository.createDynamic(userid, dynamic.getId());
+        dynamicRepository.createDynamic(userid, dynamic.getId(), Calendar.getInstance().getTime());
         return Status.getInstance(200, "release success", dynamic);
     }
 

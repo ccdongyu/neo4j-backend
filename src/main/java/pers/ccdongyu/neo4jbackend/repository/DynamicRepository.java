@@ -4,12 +4,13 @@ import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import pers.ccdongyu.neo4jbackend.domain.Dynamic;
 
+import java.util.Date;
 import java.util.List;
 
 public interface DynamicRepository extends Neo4jRepository<Dynamic, Long> {
     @Query("MATCH (a:Person), (b:Dynamic) WHERE a.name={0} AND ID(b)={1}"+
-            "CREATE (a)-[:Release]->(b)")
-    void createDynamic(String userId, Long dynamicId);
+            "CREATE (a)-[:Release{create_Date:{2}}]->(b)")
+    void createDynamic(String userId, Long dynamicId, Date createDate);
 
     List<Dynamic> getDynamicsByUserid(String userId);
 

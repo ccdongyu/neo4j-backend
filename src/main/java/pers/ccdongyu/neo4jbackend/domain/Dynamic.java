@@ -16,7 +16,6 @@ public class Dynamic {
     @GeneratedValue
     private Long id;
     private String contents;
-    private Date create_time;
     private String userid;
 
     @Relationship(type = "Release")
@@ -26,7 +25,6 @@ public class Dynamic {
 
     public Dynamic(String contents, String userid){
         this.contents = contents;
-        this.create_time = Calendar.getInstance().getTime();
         this.userid = userid;
     }
 
@@ -42,13 +40,6 @@ public class Dynamic {
         this.contents = contents;
     }
 
-    public Date getCreate_time() {
-        return create_time;
-    }
-
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
-    }
 
     public String getUserid() {
         return userid;
@@ -60,6 +51,6 @@ public class Dynamic {
 
     @Override
     public String toString(){
-        return this.contents + " " + this.create_time.toString();
+        return this.contents + " " + this.userid;
     }
 }
