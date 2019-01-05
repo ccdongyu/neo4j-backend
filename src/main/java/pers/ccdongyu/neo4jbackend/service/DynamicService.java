@@ -44,4 +44,8 @@ public class DynamicService {
         List<Dynamic> dynamics = dynamicRepository.getDynamicsByUserid(userid);
         return Status.getInstance(200, "get dynamic list success", dynamics);
     }
+
+    public Status deleteDynamic() {
+        return null;
+    }
 }

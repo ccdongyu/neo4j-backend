@@ -26,6 +26,11 @@ public class DynamicController {
     private Status getDynamicList(@RequestBody Param param){
         return dynamicService.getDynamicList(param.userid);
     }
+
+    @PostMapping("/Dynamic/delete")
+    private Status deleteDynamic(){
+        return null;
+    }
 }
 
 class Param{
