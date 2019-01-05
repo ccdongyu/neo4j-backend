@@ -1,4 +1,4 @@
-package com.aiops.mockdata.config;
+package pers.ccdongyu.neo4jbackend;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
