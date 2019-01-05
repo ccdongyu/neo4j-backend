@@ -9,6 +9,7 @@ import pers.ccdongyu.neo4jbackend.service.DynamicService;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@CrossOrigin
 public class DynamicController {
 
     private final DynamicService dynamicService;
