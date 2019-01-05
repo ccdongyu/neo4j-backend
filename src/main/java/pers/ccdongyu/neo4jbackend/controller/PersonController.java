@@ -10,7 +10,6 @@ import pers.ccdongyu.neo4jbackend.service.PersonService;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin
 public class PersonController {
 
     private PersonService personService;
