@@ -18,28 +18,28 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/User/register")
     public Status register(@RequestBody Person person) {
         return personService.register(person);
     }
 
-    @GetMapping("/user/login")
+    @GetMapping("/User/login")
     public Status login(String userid, String password) {
         return personService.login(userid, password);
     }
 
-    @PostMapping("/user/friend_add")
+    @PostMapping("/User/friend_add")
     public Status becomFriend(String userid, @RequestParam("friend_id") String friendid) {
         return personService.becomFriend(userid, friendid);
 
     }
 
-    @PostMapping("/user/friend_delete")
+    @PostMapping("/User/friend_delete")
     public Status detachFriend(String userid, @RequestParam("friend_id") String friendid) {
         return personService.detachFriend(userid, friendid);
     }
 
-    @GetMapping("/user/friend_list")
+    @GetMapping("/User/friend_list")
     public Status getAllFriends(String userid) {
         return personService.friendList(userid);
     }

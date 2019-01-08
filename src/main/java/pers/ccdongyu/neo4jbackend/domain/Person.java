@@ -21,7 +21,7 @@ public class Person {
     private String userid;
     private String password;
     private String username;
-    private Boolean sex;
+    private String sex;
     private String desc;
 
     @Relationship(type = "Friend")
@@ -55,7 +55,7 @@ public class Person {
         return username;
     }
 
-    public boolean isSex() {
+    public String getSex() {
         return sex;
     }
 
