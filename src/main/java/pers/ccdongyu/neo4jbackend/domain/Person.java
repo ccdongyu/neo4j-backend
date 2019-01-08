@@ -55,7 +55,7 @@ public class Person {
         return username;
     }
 
-    public String isSex() {
+    public String getSex() {
         return sex;
     }
 
