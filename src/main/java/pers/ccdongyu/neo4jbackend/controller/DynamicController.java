@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.web.bind.annotation.*;
 import pers.ccdongyu.neo4jbackend.message.Status;
+import pers.ccdongyu.neo4jbackend.message.StatusWithTime;
 import pers.ccdongyu.neo4jbackend.service.DynamicService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +23,9 @@ public class DynamicController {
         return dynamicService.releaseDynamic(param.userid, param.contents);
     }
 
-    @PostMapping("/Dynamic/getList")
-    private Status getDynamicList(@RequestBody Param param){
-        return dynamicService.getDynamicList(param.userid);
+    @GetMapping("/Dynamic/getList")
+    private StatusWithTime getDynamicList(@RequestParam String userid){
+        return dynamicService.getDynamicList(userid);
     }
 
     @DeleteMapping("/Dynamic/delete")
