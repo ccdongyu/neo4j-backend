@@ -14,6 +14,9 @@ public interface DynamicRepository extends Neo4jRepository<Dynamic, Long> {
 
     List<Dynamic> getDynamicsByUserid(String userId);
 
+    @Query("match ()-[relateTo]->(d:Dynamic) where ID(d)={0} return relateTo.create_Date")
+    Long getCreateTime(Long dynamicId);
+
     @Query("MATCH (n:Dynamic) WHERE ID(n)={0} RETURN n")
     Dynamic findDynamicById(Long dynamicId);
 

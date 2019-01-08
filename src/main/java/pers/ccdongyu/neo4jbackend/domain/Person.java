@@ -21,6 +21,7 @@ public class Person {
     private String userid;
     private String password;
     private String username;
+    private String avatar;
     private String sex;
     private String desc;
 
@@ -61,6 +62,14 @@ public class Person {
 
     public String getDesc() {
         return desc;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     @Override

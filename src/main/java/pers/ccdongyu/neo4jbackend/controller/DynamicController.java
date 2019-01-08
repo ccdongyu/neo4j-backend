@@ -19,7 +19,7 @@ public class DynamicController {
     }
 
     @PostMapping("/Dynamic/create")
-    private Status releaseDynamic(@RequestBody Param param){
+    private StatusWithTime releaseDynamic(@RequestBody Param param){
         return dynamicService.releaseDynamic(param.userid, param.contents);
     }
 

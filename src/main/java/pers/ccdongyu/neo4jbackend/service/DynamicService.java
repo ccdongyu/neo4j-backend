@@ -10,10 +10,9 @@ import pers.ccdongyu.neo4jbackend.message.StatusWithTime;
 import pers.ccdongyu.neo4jbackend.repository.DynamicRepository;
 import pers.ccdongyu.neo4jbackend.repository.PersonRepository;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class DynamicService {
@@ -26,28 +25,67 @@ public class DynamicService {
         this.personRepository = personRepository;
     }
 
-    public Status releaseDynamic(String userid, String content){
+    public StatusWithTime releaseDynamic(String userid, String content){
         Person person = personRepository.findByUserid(userid);
         Logger log = LoggerFactory.getLogger(this.getClass());
         log.info(userid);
         if(person == null){
-            return Status.getFailedInstance("无该用户");
+            return StatusWithTime.getFailedInstance("无该用户");
         }
         Dynamic dynamic = new Dynamic(content, userid);
         dynamicRepository.save(dynamic);
         dynamicRepository.createDynamic(userid, dynamic.getId(), Calendar.getInstance().getTime());
-        return Status.getInstance(200, "release success", dynamic);
+        return StatusWithTime.getInstanceWithTime(200, "release success", null);
     }
 
 
     public StatusWithTime getDynamicList(String userid) {
+        class DynamicListItem{
+            public String userid;
+            public String avatar;
+            public String username;
+            public String contents;
+            public String create_time;
+        }
+
         Person person = personRepository.findByUserid(userid);
         if(person == null){
             return StatusWithTime.getFailedInstance("无该用户");
         }
-        Map<String, List<Dynamic>> data = new HashMap<>();
+
+        Map<String, List<DynamicListItem>> data = new HashMap<>();
         List<Dynamic> dynamics = dynamicRepository.getDynamicsByUserid(userid);
-        data.put("dynamic_lists", dynamics);
+        List<DynamicListItem> listItems = new LinkedList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+        for (Dynamic d : dynamics) {
+            DynamicListItem listItem = new DynamicListItem();
+            listItem.contents = d.getContents();
+            listItem.userid = d.getUserid();
+            listItem.create_time = sdf.format(new Date(Long.parseLong(String.valueOf(dynamicRepository.getCreateTime(d.getId())))));
+            listItem.avatar = person.getAvatar();
+            listItem.username = person.getUsername();
+            listItems.add(listItem);
+        }
+
+        Collections.sort(listItems, new Comparator<DynamicListItem>() {
+            @Override
+            public int compare(DynamicListItem o1, DynamicListItem o2) {
+                Date o1Date = null;
+                Date o2Date = null;
+                try {
+                    o1Date = sdf.parse(o1.create_time);
+                    o2Date = sdf.parse(o2.create_time);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                return o2Date.compareTo(o1Date);
+            }
+        });
+
+        data.put("dynamic_lists", listItems);
+
         return StatusWithTime.getInstanceWithTime(200, "get dynamic list success", data);
     }
 

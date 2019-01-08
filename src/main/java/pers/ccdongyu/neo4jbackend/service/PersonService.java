@@ -9,9 +9,18 @@ import pers.ccdongyu.neo4jbackend.message.Status;
 import pers.ccdongyu.neo4jbackend.repository.DynamicRepository;
 import pers.ccdongyu.neo4jbackend.repository.PersonRepository;
 
+import java.util.Random;
+
 @Service
 public class PersonService {
-
+    private final String[] avatar = new String[]{
+            "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2802691956,955693789&fm=27&gp=0.jpg",
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3846895839,2711067435&fm=27&gp=0.jpg",
+            "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1762425966,1375965910&fm=27&gp=0.jpg",
+            "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1616787564,2143232655&fm=27&gp=0.jpg",
+            "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=650906246,1112337702&fm=27&gp=0.jpg",
+            "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=659071980,1632459771&fm=27&gp=0.jpg"
+    };
 
     private final PersonRepository personRepository;
 
@@ -42,6 +51,7 @@ public class PersonService {
         if(personRepository.findByUserid(id) != null){
             return Status.getFailedInstance("用户已注册");
         }
+        person.setAvatar(avatar[new Random().nextInt(avatar.length)]);
         personRepository.save(person.assignName());
         return Status.getSucceedInstance();
     }

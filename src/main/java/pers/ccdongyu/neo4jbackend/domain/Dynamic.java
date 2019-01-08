@@ -49,6 +49,7 @@ public class Dynamic {
         this.userid = userid;
     }
 
+
     @Override
     public String toString(){
         return this.contents + " " + this.userid;
