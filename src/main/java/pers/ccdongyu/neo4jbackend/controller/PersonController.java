@@ -18,7 +18,7 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/User/register")
     public Status register(@RequestBody Person person) {
         return personService.register(person);
     }
@@ -28,7 +28,7 @@ public class PersonController {
         return personService.login(userid, password);
     }
 
-    @PostMapping("/user/friend_add")
+    @PostMapping("/User/friend_add")
     public Status becomFriend(String userid, @RequestParam("friend_id") String friendid) {
         return personService.becomFriend(userid, friendid);
 
