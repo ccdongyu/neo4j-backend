@@ -25,14 +25,14 @@ public class DynamicService {
         this.personRepository = personRepository;
     }
 
-    public StatusWithTime releaseDynamic(String userid, String content){
+    public StatusWithTime releaseDynamic(String userid, String content, List<String> contents_img){
         Person person = personRepository.findByUserid(userid);
         Logger log = LoggerFactory.getLogger(this.getClass());
         log.info(userid);
         if(person == null){
             return StatusWithTime.getFailedInstance("无该用户");
         }
-        Dynamic dynamic = new Dynamic(content, userid);
+        Dynamic dynamic = new Dynamic(content, userid, contents_img);
         dynamicRepository.save(dynamic);
         dynamicRepository.createDynamic(userid, dynamic.getId(), Calendar.getInstance().getTime());
         return StatusWithTime.getInstanceWithTime(200, "release success", null);
@@ -46,6 +46,7 @@ public class DynamicService {
             public String username;
             public String contents;
             public String create_time;
+            public List<String> contents_img;
         }
 
         Person person = personRepository.findByUserid(userid);
@@ -65,6 +66,7 @@ public class DynamicService {
             listItem.create_time = sdf.format(new Date(Long.parseLong(String.valueOf(dynamicRepository.getCreateTime(d.getId())))));
             listItem.avatar = person.getAvatar();
             listItem.username = person.getUsername();
+            listItem.contents_img = d.getContents_img() == null? new LinkedList<>():d.getContents_img();
             listItems.add(listItem);
         }
 

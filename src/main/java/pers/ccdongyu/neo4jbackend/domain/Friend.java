@@ -17,6 +17,8 @@ public class Friend {
     @EndNode
     private Person p2;
 
+    public Friend(){}
+
     public Friend(Person p1, Person p2) {
         this.p1 = p1;
         this.p2 = p2;

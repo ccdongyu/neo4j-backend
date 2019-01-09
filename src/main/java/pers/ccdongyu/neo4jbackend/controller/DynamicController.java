@@ -8,6 +8,7 @@ import pers.ccdongyu.neo4jbackend.message.StatusWithTime;
 import pers.ccdongyu.neo4jbackend.service.DynamicService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class DynamicController {
@@ -20,7 +21,7 @@ public class DynamicController {
 
     @PostMapping("/Dynamic/create")
     private StatusWithTime releaseDynamic(@RequestBody Param param){
-        return dynamicService.releaseDynamic(param.userid, param.contents);
+        return dynamicService.releaseDynamic(param.userid, param.contents, param.contents_img);
     }
 
     @GetMapping("/Dynamic/getList")
@@ -37,4 +38,5 @@ public class DynamicController {
 class Param{
     public String userid;
     public String contents;
+    public List<String> contents_img;
 }

@@ -23,7 +23,7 @@ public class PersonController {
         return personService.register(person);
     }
 
-    @GetMapping("/user/login")
+    @GetMapping("/User/login")
     public Status login(String userid, String password) {
         return personService.login(userid, password);
     }
@@ -34,12 +34,12 @@ public class PersonController {
 
     }
 
-    @PostMapping("/user/friend_delete")
+    @PostMapping("/User/friend_delete")
     public Status detachFriend(String userid, @RequestParam("friend_id") String friendid) {
         return personService.detachFriend(userid, friendid);
     }
 
-    @GetMapping("/user/friend_list")
+    @GetMapping("/User/friend_list")
     public Status getAllFriends(String userid) {
         return personService.friendList(userid);
     }

@@ -17,15 +17,17 @@ public class Dynamic {
     private Long id;
     private String contents;
     private String userid;
+    private List<String> contents_img;
 
     @Relationship(type = "Release")
     private List<Release> releases;
 
     public Dynamic(){}
 
-    public Dynamic(String contents, String userid){
+    public Dynamic(String contents, String userid, List<String> contents_img){
         this.contents = contents;
         this.userid = userid;
+        this.contents_img = contents_img;
     }
 
     public Long getId() {
@@ -49,6 +51,13 @@ public class Dynamic {
         this.userid = userid;
     }
 
+    public List<String> getContents_img() {
+        return contents_img;
+    }
+
+    public void setContents_img(List<String> contents_img) {
+        this.contents_img = contents_img;
+    }
 
     @Override
     public String toString(){
