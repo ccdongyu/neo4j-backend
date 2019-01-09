@@ -45,8 +45,8 @@ public class DynamicService {
             public String avatar;
             public String username;
             public String contents;
-            public String create_time;
             public List<String> contents_img;
+            public String create_time;
         }
 
         Person person = personRepository.findByUserid(userid);
