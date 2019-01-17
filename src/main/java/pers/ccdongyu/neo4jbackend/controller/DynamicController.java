@@ -25,8 +25,8 @@ public class DynamicController {
     }
 
     @GetMapping("/Dynamic/getList")
-    private StatusWithTime getDynamicList(@RequestParam String userid){
-        return dynamicService.getDynamicList(userid);
+    private StatusWithTime getDynamicList(@RequestParam(required = false) Integer dynamicid, @RequestParam String userid){
+        return dynamicService.getDynamicList(dynamicid, userid);
     }
 
     @DeleteMapping("/Dynamic/delete")

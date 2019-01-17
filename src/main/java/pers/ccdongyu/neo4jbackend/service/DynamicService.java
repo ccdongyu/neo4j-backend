@@ -23,6 +23,18 @@ public class DynamicService {
     private final PersonRepository personRepository;
     private CommentRepository commentRepository;
 
+    class DynamicListItem{
+        public Long dynamicid;
+        public String userid;
+        public String avatar;
+        public String username;
+        public String contents;
+        public List<String> contents_img;
+        public String create_time;
+        public Integer comments;
+        public Integer stars;
+    }
+
     public DynamicService(DynamicRepository dynamicRepository, PersonRepository personRepository, CommentRepository commentRepository){
         this.dynamicRepository = dynamicRepository;
         this.personRepository = personRepository;
@@ -43,18 +55,7 @@ public class DynamicService {
     }
 
 
-    public StatusWithTime getDynamicList(String userid) {
-        class DynamicListItem{
-            public Long dynamicid;
-            public String userid;
-            public String avatar;
-            public String username;
-            public String contents;
-            public List<String> contents_img;
-            public String create_time;
-            public Integer comments;
-            public Integer stars;
-        }
+    public StatusWithTime getDynamicList(Integer dynamicid, String userid) {
 
         Person person = personRepository.findByUserid(userid);
         if(person == null){
@@ -62,7 +63,13 @@ public class DynamicService {
         }
 
         Map<String, List<DynamicListItem>> data = new HashMap<>();
-        List<Dynamic> dynamics = dynamicRepository.getDynamicsByUserid(userid);
+        List<Dynamic> dynamics = null;
+        if (dynamicid == null) {
+            dynamics = dynamicRepository.getDynamicsByUserid(userid);
+        }else{
+            dynamics = new LinkedList<>();
+            dynamics.add(dynamicRepository.findDynamicById(Long.valueOf(dynamicid)));
+        }
         List<DynamicListItem> listItems = new LinkedList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
