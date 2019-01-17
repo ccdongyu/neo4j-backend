@@ -68,7 +68,6 @@ public class PersonService {
 
     public Status friendList(String userid){
         return Status.getInstance(200,"",personRepository.getAllFriends(userid).stream().map(Person::clearPassword));
-
     }
 
 }

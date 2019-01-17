@@ -33,10 +33,17 @@ public class DynamicController {
     private Status deleteDynamic(@RequestParam Long nodeid){
         return dynamicService.deleteDynamic(nodeid);
     }
+
+    @PostMapping("/Dynamic/thumb_up")
+    private Status givenThumbUp(@RequestBody Param param){
+        return dynamicService.givenThumbUp(param.userid, Long.valueOf(param.dynamicid));
+    }
 }
 
 class Param{
     public String userid;
+    public Integer dynamicid;
+    public String comments;
     public String contents;
     public List<String> contents_img;
 }

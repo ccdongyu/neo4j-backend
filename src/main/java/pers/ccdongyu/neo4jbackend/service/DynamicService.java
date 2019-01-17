@@ -3,10 +3,12 @@ package pers.ccdongyu.neo4jbackend.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pers.ccdongyu.neo4jbackend.domain.Comment;
 import pers.ccdongyu.neo4jbackend.domain.Dynamic;
 import pers.ccdongyu.neo4jbackend.domain.Person;
 import pers.ccdongyu.neo4jbackend.message.Status;
 import pers.ccdongyu.neo4jbackend.message.StatusWithTime;
+import pers.ccdongyu.neo4jbackend.repository.CommentRepository;
 import pers.ccdongyu.neo4jbackend.repository.DynamicRepository;
 import pers.ccdongyu.neo4jbackend.repository.PersonRepository;
 
@@ -19,10 +21,12 @@ public class DynamicService {
 
     private final DynamicRepository dynamicRepository;
     private final PersonRepository personRepository;
+    private CommentRepository commentRepository;
 
-    public DynamicService(DynamicRepository dynamicRepository, PersonRepository personRepository){
+    public DynamicService(DynamicRepository dynamicRepository, PersonRepository personRepository, CommentRepository commentRepository){
         this.dynamicRepository = dynamicRepository;
         this.personRepository = personRepository;
+        this.commentRepository = commentRepository;
     }
 
     public StatusWithTime releaseDynamic(String userid, String content, List<String> contents_img){
@@ -41,12 +45,15 @@ public class DynamicService {
 
     public StatusWithTime getDynamicList(String userid) {
         class DynamicListItem{
+            public Long dynamicid;
             public String userid;
             public String avatar;
             public String username;
             public String contents;
             public List<String> contents_img;
             public String create_time;
+            public Integer comments;
+            public Integer stars;
         }
 
         Person person = personRepository.findByUserid(userid);
@@ -61,12 +68,15 @@ public class DynamicService {
 
         for (Dynamic d : dynamics) {
             DynamicListItem listItem = new DynamicListItem();
+            listItem.dynamicid = d.getId();
             listItem.contents = d.getContents();
             listItem.userid = d.getUserid();
-            listItem.create_time = sdf.format(new Date(Long.parseLong(String.valueOf(dynamicRepository.getCreateTime(d.getId())))));
+            listItem.create_time = sdf.format(new Date(dynamicRepository.getCreateTime(d.getId())));
             listItem.avatar = person.getAvatar();
             listItem.username = person.getUsername();
             listItem.contents_img = d.getContents_img() == null? new LinkedList<>():d.getContents_img();
+            listItem.stars = d.getStars();
+            listItem.comments = commentRepository.getCommentsNum(Long.valueOf(d.getId()));
             listItems.add(listItem);
         }
 
@@ -96,6 +106,14 @@ public class DynamicService {
             return Status.getFailedInstance("无效的动态编号");
         }
         dynamicRepository.deleteDynamicById(nodeId);
+        return Status.getSucceedInstance();
+    }
+
+    public Status givenThumbUp(String userid, Long dynamicid) {
+        if (dynamicRepository.findDynamicById(dynamicid) == null){
+            return Status.getFailedInstance("无效的用户编号");
+        }
+        dynamicRepository.addstars(dynamicid);
         return Status.getSucceedInstance();
     }
 }

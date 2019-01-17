@@ -31,6 +31,9 @@ public class Person {
     @Relationship(type = "Release")
     private List<Release> releases;
 
+    @Relationship(type = "Comment")
+    private List<Comment> comments;
+
     public Person() {
     }
 

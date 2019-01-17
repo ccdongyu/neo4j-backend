@@ -5,8 +5,6 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @NodeEntity
@@ -18,6 +16,7 @@ public class Dynamic {
     private String contents;
     private String userid;
     private List<String> contents_img;
+    private Integer stars;
 
     @Relationship(type = "Release")
     private List<Release> releases;
@@ -28,6 +27,7 @@ public class Dynamic {
         this.contents = contents;
         this.userid = userid;
         this.contents_img = contents_img;
+        this.stars = 0;
     }
 
     public Long getId() {
@@ -57,6 +57,14 @@ public class Dynamic {
 
     public void setContents_img(List<String> contents_img) {
         this.contents_img = contents_img;
+    }
+
+    public Integer getStars() {
+        return stars;
+    }
+
+    public void setStars(Integer stars) {
+        this.stars = stars;
     }
 
     @Override
