@@ -3,10 +3,8 @@ package pers.ccdongyu.neo4jbackend.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pers.ccdongyu.neo4jbackend.domain.Dynamic;
 import pers.ccdongyu.neo4jbackend.domain.Person;
 import pers.ccdongyu.neo4jbackend.message.Status;
-import pers.ccdongyu.neo4jbackend.repository.DynamicRepository;
 import pers.ccdongyu.neo4jbackend.repository.PersonRepository;
 
 import java.util.Random;
@@ -70,4 +68,7 @@ public class PersonService {
         return Status.getInstance(200,"",personRepository.getAllFriends(userid).stream().map(Person::clearPassword));
     }
 
+    public Status friendsMayKnow(String friendid){
+        return Status.getInstance(200,"",personRepository.getAllFriends(friendid).stream().map(Person::clearPassword));
+    }
 }

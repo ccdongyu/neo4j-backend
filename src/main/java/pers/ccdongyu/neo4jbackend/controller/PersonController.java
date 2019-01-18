@@ -1,8 +1,5 @@
 package pers.ccdongyu.neo4jbackend.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import pers.ccdongyu.neo4jbackend.domain.Person;
 import pers.ccdongyu.neo4jbackend.message.Status;
@@ -44,4 +41,8 @@ public class PersonController {
         return personService.friendList(userid);
     }
 
+    @PostMapping("/User/friends_may_know")
+    public Status friendsMayKnow(@RequestParam("friend_id") String friendid) {
+        return personService.friendsMayKnow(friendid);
+    }
 }
