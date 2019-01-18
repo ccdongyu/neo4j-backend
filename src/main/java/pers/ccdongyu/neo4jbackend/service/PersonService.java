@@ -71,4 +71,12 @@ public class PersonService {
     public Status friendsMayKnow(String friendid){
         return Status.getInstance(200,"",personRepository.getAllFriends(friendid).stream().map(Person::clearPassword));
     }
+
+    public Status setMessage(String userid,String username,String sex,String desc){
+        if(personRepository.findByUserid(userid)==null) {
+            return Status.getFailedInstance("用户未注册！");
+        }
+        personRepository.changeMessage(userid,username,sex,desc);
+        return Status.getSucceedInstance();
+    }
 }

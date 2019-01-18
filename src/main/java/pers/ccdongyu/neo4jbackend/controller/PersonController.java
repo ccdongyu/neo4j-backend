@@ -45,4 +45,8 @@ public class PersonController {
     public Status friendsMayKnow(@RequestParam("friend_id") String friendid) {
         return personService.friendsMayKnow(friendid);
     }
+    @PostMapping("/User/info_update")
+    public Status setPersonMessage(String userid,String username,String sex,String desc){
+        return personService.setMessage(userid,username,sex,desc);
+    }
 }
