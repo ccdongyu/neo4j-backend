@@ -21,4 +21,7 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
 
     @Query("MATCH (Person{userid:{0}})-[:Friend*1]-(p) RETURN p")
     Collection<Person> getAllFriends(String userid);
+
+    @Query("MATCH (a:Friend) WHERE a.userid='userid' set a.username='username' AND a.sex='sex' AND a.desc='desc' RETURN a")
+    void changeMessage(String userid,String username,String sex,String desc);
 }
