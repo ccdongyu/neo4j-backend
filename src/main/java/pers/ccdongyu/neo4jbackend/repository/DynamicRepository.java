@@ -25,5 +25,8 @@ public interface DynamicRepository extends Neo4jRepository<Dynamic, Long> {
     void deleteDynamicById(Long dynamicId);
 
     @Query("MATCH (n:Dynamic) WHERE ID(n)={0} SET n.stars=1+n.stars")
-    void addstars(Long dynamicId);
+    void addStars(Long dynamicId);
+
+    @Query("MATCH (n:Dynamic) WHERE ID(n)={0} SET n.stars=0")
+    void initStars(Long dynamicId);
 }

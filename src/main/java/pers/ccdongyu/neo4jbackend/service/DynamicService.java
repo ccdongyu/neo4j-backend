@@ -69,6 +69,7 @@ public class DynamicService {
         }else{
             dynamics = new LinkedList<>();
             dynamics.add(dynamicRepository.findDynamicById(Long.valueOf(dynamicid)));
+            if (dynamics.isEmpty()){return StatusWithTime.getFailedInstance("no such dynamic");}
         }
         List<DynamicListItem> listItems = new LinkedList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -82,7 +83,12 @@ public class DynamicService {
             listItem.avatar = person.getAvatar();
             listItem.username = person.getUsername();
             listItem.contents_img = d.getContents_img() == null? new LinkedList<>():d.getContents_img();
-            listItem.stars = d.getStars();
+            if(d.getStars() == null){
+                listItem.stars = 0;
+                dynamicRepository.initStars(d.getId());
+            }else{
+                listItem.stars = d.getStars();
+            }
             listItem.comments = commentRepository.getCommentsNum(Long.valueOf(d.getId()));
             listItems.add(listItem);
         }
@@ -120,7 +126,7 @@ public class DynamicService {
         if (dynamicRepository.findDynamicById(dynamicid) == null){
             return Status.getFailedInstance("无效的用户编号");
         }
-        dynamicRepository.addstars(dynamicid);
+        dynamicRepository.addStars(dynamicid);
         return Status.getSucceedInstance();
     }
 }

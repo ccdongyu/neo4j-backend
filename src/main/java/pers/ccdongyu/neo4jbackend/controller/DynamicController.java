@@ -42,6 +42,7 @@ public class DynamicController {
 
 class Param{
     public String userid;
+    public String friend_id;
     public Integer dynamicid;
     public String comments;
     public String contents;

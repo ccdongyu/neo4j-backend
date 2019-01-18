@@ -8,6 +8,7 @@ import pers.ccdongyu.neo4jbackend.domain.Dynamic;
 import pers.ccdongyu.neo4jbackend.domain.Person;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface PersonRepository extends Neo4jRepository<Person, Long> {
     Person findByUserid(String userid);
@@ -21,4 +22,10 @@ public interface PersonRepository extends Neo4jRepository<Person, Long> {
 
     @Query("MATCH (Person{userid:{0}})-[:Friend*1]-(p) RETURN p")
     Collection<Person> getAllFriends(String userid);
+
+    @Query("match (:Person{userid:{0}})-[:Friend*2]-(n:Person) where n.userid <> {0} return n")
+    List<Person> getRecommendFriends(String userid);
+
+    @Query("MATCH (n:Person{userid:{0}})-[:Friend*1]-(m:Person{userid:{1}}) RETURN true")
+    Boolean isFriend(String userid, String friendid);
 }

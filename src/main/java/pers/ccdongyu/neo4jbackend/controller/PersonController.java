@@ -2,7 +2,6 @@ package pers.ccdongyu.neo4jbackend.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 import pers.ccdongyu.neo4jbackend.domain.Person;
 import pers.ccdongyu.neo4jbackend.message.Status;
@@ -29,14 +28,14 @@ public class PersonController {
     }
 
     @PostMapping("/User/friend_add")
-    public Status becomFriend(String userid, @RequestParam("friend_id") String friendid) {
-        return personService.becomFriend(userid, friendid);
+    public Status becomFriend(@RequestBody Param param) {
+        return personService.becomFriend(param.userid, param.friend_id);
 
     }
 
     @PostMapping("/User/friend_delete")
-    public Status detachFriend(String userid, @RequestParam("friend_id") String friendid) {
-        return personService.detachFriend(userid, friendid);
+    public Status detachFriend(@RequestBody Param param) {
+        return personService.detachFriend(param.userid, param.friend_id);
     }
 
     @GetMapping("/User/friend_list")
@@ -44,4 +43,8 @@ public class PersonController {
         return personService.friendList(userid);
     }
 
+    @GetMapping("/User/friend_recommend")
+    public Status getRecommendFriends(String userid){
+        return personService.recommendFriends(userid);
+    }
 }

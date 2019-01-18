@@ -9,7 +9,7 @@ import pers.ccdongyu.neo4jbackend.message.Status;
 import pers.ccdongyu.neo4jbackend.repository.DynamicRepository;
 import pers.ccdongyu.neo4jbackend.repository.PersonRepository;
 
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class PersonService {
@@ -57,8 +57,15 @@ public class PersonService {
     }
 
     public Status becomFriend(String userid, String friendid){
-        personRepository.becomeFriend(userid,friendid);
-        return Status.getSucceedInstance();
+        if(personRepository.findByUserid(userid) == null || personRepository.findByUserid(friendid) == null){
+            return Status.getFailedInstance("用户不存在");
+        }
+        if (personRepository.isFriend(userid, friendid).equals(Boolean.TRUE)){
+            return Status.getFailedInstance("已成为好友");
+        }else {
+            personRepository.becomeFriend(userid, friendid);
+            return Status.getSucceedInstance();
+        }
     }
 
     public Status detachFriend(String userid, String friendid){
@@ -70,4 +77,30 @@ public class PersonService {
         return Status.getInstance(200,"",personRepository.getAllFriends(userid).stream().map(Person::clearPassword));
     }
 
+    public Status recommendFriends(String userid) {
+        class ResposeItem{
+            public String friend_id;
+            public String avatar;
+            public String username;
+        }
+
+        if(personRepository.findByUserid(userid) == null){
+            return Status.getFailedInstance("用户不存在");
+        }
+        List<Person> people = personRepository.getRecommendFriends(userid);
+        List<ResposeItem> resposeItems = new LinkedList<>();
+        Map<String, List<ResposeItem>> data = new HashMap<>();
+
+        for (Person p: people) {
+            ResposeItem item = new ResposeItem();
+            item.avatar = p.getAvatar();
+            item.friend_id = p.getUserid();
+            item.username = p.getUsername();
+            resposeItems.add(item);
+            if (resposeItems.size() == 10) break;
+        }
+
+        data.put("friend_lists", resposeItems);
+        return Status.getInstance(200, "", data);
+    }
 }
