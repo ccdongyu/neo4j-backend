@@ -63,11 +63,14 @@ public class DynamicService {
         }
 
         Map<String, List<DynamicListItem>> data = new HashMap<>();
-        List<Dynamic> dynamics = null;
+        List<Dynamic> dynamics = new LinkedList<>();
         if (dynamicid == null) {
-            dynamics = dynamicRepository.getDynamicsByUserid(userid);
+            dynamics.addAll(dynamicRepository.getDynamicsByUserid(userid));
+            List<Person> friends = (List<Person>) personRepository.getAllFriends(userid);
+            for (Person friend: friends) {
+                dynamics.addAll(dynamicRepository.getDynamicsByUserid(friend.getUserid()));
+            }
         }else{
-            dynamics = new LinkedList<>();
             dynamics.add(dynamicRepository.findDynamicById(Long.valueOf(dynamicid)));
             if (dynamics.isEmpty()){return StatusWithTime.getFailedInstance("no such dynamic");}
         }
@@ -75,6 +78,7 @@ public class DynamicService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         for (Dynamic d : dynamics) {
+            if (d == null) {continue;}
             DynamicListItem listItem = new DynamicListItem();
             listItem.dynamicid = d.getId();
             listItem.contents = d.getContents();
@@ -109,7 +113,7 @@ public class DynamicService {
             }
         });
 
-        data.put("dynamic_lists", listItems);
+        data.put("dynamic_lists", listItems.subList(0, listItems.size() > 10 ? 10: listItems.size()));
 
         return StatusWithTime.getInstanceWithTime(200, "get dynamic list success", data);
     }
